@@ -34,9 +34,6 @@ def listMovies():
     y= json.dumps(eval(footer),sort_keys=True)
     
     movies= json.loads(y)
-    
-    print("Type y: ",type(y))
-    print("Type: ",type(movies))
    
     class Movie:        
         def __init__(self,contentId,title,contentType,detail,logLine):
@@ -71,8 +68,57 @@ def listMovies():
         movie= Movie(element["contentId"],element["title"],element["contentType"],element["detail"].split("| "),element["logLine"])
         print(movie)
     
+def listSeries():
+    #include=title,contentType,contentId,logLine,detail,childContent&contentType=Series
+    response= requests.get(baseURL()+"#include=title,contentType,contentId,logLine,detail,childContent&contentType=Series")
+    
+    soup= BeautifulSoup(response.text,"lxml")
+    
+    footer= soup.find("p").text
 
-listMovies()
+    print("-----CONECTED-----\n")
+
+    print(footer)
+    
+    y= json.dumps(eval(footer),sort_keys=True)
+
+    series=json.loads(y)
+
+    class Serie:
+        def __init__(self,title,contentType,contentId,logLine,detail,childContent):
+            self.title=title
+            self.contentType= contentType
+            self.contentId= contentId
+            self.logLine= logLine
+            self.rating= detail[0]
+            self.cantSeason= detail[1]
+            self.genre= detail[2]
+            self.seasons=childContent
+        
+        def __str__(self):
+            return """{contentType}:
+                title: {title}
+                contentId: {contentId}
+                logLine: {logLine}
+                rating: {rating}
+                cantSeason: {cantSeason}
+                genre: {genre}
+                seasons: {season}
+            """.format(contentType=self.contentType,
+            title=self.title,
+            contentId=self.contentId,
+            logLine=self.logLine,
+            rating=self.rating,
+            cantSeason= self.cantSeason,
+            genre=self.genre,
+            seasons=self.seasons)
+
+    for element in series["playContentArray"]["playContents"]:
+        serie=Serie(element["title"],element["contentType"],element["contentId"],element["logLine"],element["detail"].split("| "),element["childContent"])
+
+#listMovies()
+
+listSeries()
 
 
 
