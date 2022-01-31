@@ -87,16 +87,16 @@ def listMovies():
 
     print("-----CONECTED-----\n")
     
-    #y= json.dumps(eval(footer))
-    
-    #movies= json.loads(y)    
-    
     movies= eval(footer)
+    
+    finalListMovies=[]
     
     for element in movies["playContentArray"]["playContents"]:
         #Use split in tag 'details' for separate the rating,year and genre.
         movie= Movie(element["contentId"],element["title"],element["contentType"],element["detail"].split("| "),element["logLine"])
-        print(movie)
+        finalListMovies.append(movie.__dict__)
+    
+    return finalListMovies
     
 def listSeries():
     #include=title,contentType,contentId,logLine,detail,childContent&contentType=Series
@@ -108,21 +108,24 @@ def listSeries():
 
     print("-----CONECTED-----\n")
     
-    #y= json.dumps(eval(footer),sort_keys=True)
-
-    #series=json.loads(y)
-
     series= eval(footer)
+    
+    finalListSeries= []
     
     for element in series["playContentArray"]["playContents"]:
         serie=Serie(element["title"],element["contentType"],element["contentId"],element["logLine"],element["detail"].split("| "),element["childContent"])
 
-        print(serie,"\n")
+        finalListSeries.append(serie.__dict__)
 
+    return finalListSeries
 
-#listMovies()
-
-listSeries()
+def createListMoviesAndSeries():
+    
+    finalDict={"movies":listMovies(),"series":listSeries()}
+    
+    return finalDict
+    
+    
    
 
 
