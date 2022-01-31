@@ -1,16 +1,11 @@
+#!/usr/bin/python3
+
 import os
 import json
 from conected import *
 
 #this file creates a .json file in the same directory where it is hosted.
 
-pwd= os.getcwd()    #path actual
-
-
-"""
-
-
-"""
 files= os.listdir()
 
 if "data.json" in files:
@@ -20,11 +15,11 @@ if "data.json" in files:
         if ".json" in file:
             os.remove(file)
             
-            finalDir= createListMoviesAndSeries()
+            finalDir= createListMoviesAndSeries()           
             
-            jsonString= json.dumps(finalDir)
+            jsonFile= open("data.json","w",encoding='utf8')
             
-            jsonFile= open("data.json","w")
+            jsonString= json.dumps(finalDir,ensure_ascii=False)
             
             jsonFile.write(jsonString)
             jsonFile.close()
@@ -32,8 +27,10 @@ else:
     
     finalDir= createListMoviesAndSeries()
             
-    jsonString= json.dumps(finalDir)    
-    jsonFile= open("data.json","w")
+      
+    jsonFile= open("data.json","w",encoding='utf8')
+    
+    jsonString= json.dumps(finalDir,ensure_ascii=False)  
     
     jsonFile.write(jsonString)
     jsonFile.close()
