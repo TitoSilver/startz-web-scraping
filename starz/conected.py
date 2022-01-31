@@ -8,14 +8,6 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
-"""
-def baseConected():
-    response= requests.get("https://www.starz.com/ar/es/")
-
-    print("starz: ",response.status_code)
-    return baseConected
-
-"""
 def baseURL():
     return "https://www.starz.com/ar/es/"
 def requestURL():
@@ -95,9 +87,11 @@ def listMovies():
 
     print("-----CONECTED-----\n")
     
-    y= json.dumps(eval(footer))
+    #y= json.dumps(eval(footer))
     
-    movies= json.loads(y)    
+    #movies= json.loads(y)    
+    
+    movies= eval(footer)
     
     for element in movies["playContentArray"]["playContents"]:
         #Use split in tag 'details' for separate the rating,year and genre.
@@ -106,20 +100,20 @@ def listMovies():
     
 def listSeries():
     #include=title,contentType,contentId,logLine,detail,childContent&contentType=Series
-    response= requests.get(baseURL()+"#include=title,contentType,contentId,logLine,detail,childContent&contentType=Series")
+    response= requests.get(requestURL()+"include=title,contentType,contentId,logLine,detail,childContent&contentType=Series")
     
     soup= BeautifulSoup(response.text,"lxml")
     
     footer= soup.find("p").text
 
     print("-----CONECTED-----\n")
-
-    print(footer)
     
-    y= json.dumps(eval(footer),sort_keys=True)
+    #y= json.dumps(eval(footer),sort_keys=True)
 
-    series=json.loads(y)
+    #series=json.loads(y)
 
+    series= eval(footer)
+    
     for element in series["playContentArray"]["playContents"]:
         serie=Serie(element["title"],element["contentType"],element["contentId"],element["logLine"],element["detail"].split("| "),element["childContent"])
 
