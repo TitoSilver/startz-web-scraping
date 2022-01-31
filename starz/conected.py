@@ -55,7 +55,17 @@ class Serie:
             genre=self.genre,
             seasons=self.seasons)
 
+<<<<<<< HEAD
 class Movie:        
+=======
+    print("-----CONECTED-----\n")
+    
+    y= json.dumps(eval(footer),sort_keys=True)
+    
+    movies= json.loads(y)
+   
+    class Movie:        
+>>>>>>> d13b8ab1b6f92ee4862b93591c0d158cf964c861
         def __init__(self,contentId,title,contentType,detail,logLine):
             self.contentId= contentId
             self.title= title
@@ -128,7 +138,57 @@ def listSeries():
     series=json.loads(y)
 
     
+def listSeries():
+    #include=title,contentType,contentId,logLine,detail,childContent&contentType=Series
+    response= requests.get(baseURL()+"#include=title,contentType,contentId,logLine,detail,childContent&contentType=Series")
+    
+    soup= BeautifulSoup(response.text,"lxml")
+    
+    footer= soup.find("p").text
 
+    print("-----CONECTED-----\n")
+
+    print(footer)
+    
+    y= json.dumps(eval(footer),sort_keys=True)
+
+    series=json.loads(y)
+
+    class Serie:
+        def __init__(self,title,contentType,contentId,logLine,detail,childContent):
+            self.title=title
+            self.contentType= contentType
+            self.contentId= contentId
+            self.logLine= logLine
+            self.rating= detail[0]
+            self.cantSeason= detail[1]
+            self.genre= detail[2]
+            self.seasons=childContent
+        
+        def __str__(self):
+            return """{contentType}:
+                title: {title}
+                contentId: {contentId}
+                logLine: {logLine}
+                rating: {rating}
+                cantSeason: {cantSeason}
+                genre: {genre}
+                seasons: {season}
+            """.format(contentType=self.contentType,
+            title=self.title,
+            contentId=self.contentId,
+            logLine=self.logLine,
+            rating=self.rating,
+            cantSeason= self.cantSeason,
+            genre=self.genre,
+            seasons=self.seasons)
+
+    for element in series["playContentArray"]["playContents"]:
+        serie=Serie(element["title"],element["contentType"],element["contentId"],element["logLine"],element["detail"].split("| "),element["childContent"])
+
+#listMovies()
+
+<<<<<<< HEAD
     for element in series["playContentArray"]["playContents"]:
         serie=Serie(element["title"],element["contentType"],element["contentId"],element["logLine"],element["detail"].split("| "),element["childContent"])
 
@@ -140,6 +200,9 @@ def listSeries():
 listSeries()
    
 
+=======
+listSeries()
+>>>>>>> d13b8ab1b6f92ee4862b93591c0d158cf964c861
 
 
 
